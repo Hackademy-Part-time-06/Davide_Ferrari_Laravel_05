@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\InfoMail;
+use Illuminate\Support\Facades\Mail;
 
 class PageController extends Controller
 {
@@ -15,19 +17,12 @@ class PageController extends Controller
     ];
 
 
-    public function homepage () {
+    public function homepage () {        
         return view('home');
     }
 
-    public function corsidisponibili () {
-
-
+    public function corsidisponibili () {        
         return view('courses', ['corsi' => self::$corsi]);
-
-
-
-
-
     }
 
     public function contatti () {
@@ -46,4 +41,25 @@ class PageController extends Controller
             abort(404);
 
      }
+     
+    public function send (Request $info) {
+
+        $info->validate ([
+                            "firstname" => "required|string",
+                            "secondname" => "required|string",
+                            "email" => "required|email",
+                            "phonenumber" => "required",
+                ]);
+
+        $data = [
+                    "name" => $info->firstname,
+                    "surname" => $info->secondname,
+                    "number" => $info->phonenumber,
+                    "email" => $info->email,
+        ];
+        // dd($data);
+
+        Mail::to($info->input('email'))->send(new InfoMail($data));
+                
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,8 @@ Route::get('/', [PageController::class, 'homepage'])->name('homepage');
 
 Route::get('/corsi', [PageController::class, 'corsidisponibili'])->name('corsidisponibili');
 
+Route::get('/corsospecifico/{refcorso}', [PageController::class, 'dettagliocorso'])->name('dettagliocorso');
+
 Route::get('/contacts', [PageController::class, 'contatti'])->name('contatti');
 
-Route::get('/corsospecifico/{refcorso}', [PageController::class, 'dettagliocorso'])->name('dettagliocorso');
+Route::post('/send', [PageController::class, 'send'])->name('send');
